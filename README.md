@@ -11,8 +11,9 @@ A small PHP/MariaDB website with:
 - Holy Cross Parish and Friary theme assets and brand palette
 - Public contact form with branded HTML email copies and SMTP support
 - Admin users page with current-user list and admin user creation
+- GitHub update checks and release ZIP installs from the admin updater
 
-Current version: `1.6.1`
+Current version: `1.7.0`
 
 ## Versioning
 
@@ -40,6 +41,11 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.7.0
+
+- Added GitHub update checking from the admin updater.
+- Added GitHub release ZIP installation that preserves local config and runs database migrations.
 
 ### 1.6.1
 
@@ -121,13 +127,13 @@ Use `/admin/settings.php` to configure the recipient email address and mail deli
 
 ## Updates
 
-When new migration files are added to `migrations/`, sign in as an admin and visit:
+When new migration files are added to `migrations/`, or when you want to check GitHub for a newer CMS release, sign in as an admin and visit:
 
 ```text
 /admin/update.php
 ```
 
-The updater applies pending SQL migrations and records them in the `schema_migrations` table.
+The updater can install a generated release ZIP from GitHub and applies pending SQL migrations recorded in the `schema_migrations` table.
 
 ## Theme
 

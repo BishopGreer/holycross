@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 const CMS_ROOT = __DIR__ . '/..';
-const CMS_VERSION = '1.6.1';
+const CMS_VERSION = '1.7.0';
 
 spl_autoload_register(function (string $class): void {
     $path = CMS_ROOT . '/core/' . $class . '.php';
