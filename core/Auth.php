@@ -12,7 +12,7 @@ final class Auth
             return null;
         }
 
-        $stmt = Database::connect()->prepare('SELECT id, username, display_name, email, role FROM users WHERE id = ? LIMIT 1');
+        $stmt = Database::connect()->prepare('SELECT id, username, email, role FROM users WHERE id = ? LIMIT 1');
         $stmt->execute([(int)$userId]);
         $user = $stmt->fetch();
 

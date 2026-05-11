@@ -13,7 +13,7 @@ A small PHP/MariaDB website with:
 - Admin users page with current-user list and admin user creation
 - GitHub update checks and release ZIP installs from the admin updater
 
-Current version: `1.7.1`
+Current version: `1.7.2`
 
 ## Versioning
 
@@ -50,6 +50,10 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.7.2
+
+- Fixed admin access before database migrations run by making authentication avoid newly-added user columns.
 
 ### 1.7.1
 
