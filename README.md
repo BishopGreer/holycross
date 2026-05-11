@@ -12,17 +12,39 @@ A small PHP/MariaDB website with:
 - Public contact form with branded HTML email copies and SMTP support
 - Admin users page with current-user list and admin user creation
 
-Current version: `1.6.0`
+Current version: `1.6.1`
 
 ## Versioning
 
 - Start project changes at `1.0.1`.
 - Every update should bump `CMS_VERSION` in `core/bootstrap.php`.
+- Every update that changes `CMS_VERSION` should be committed and pushed to GitHub.
+- Every versioned commit should include generated release files from `tools/build-release.sh`.
 - Routine fixes and small theme/content changes increase the patch version, such as `1.0.1` to `1.0.2`.
 - Major feature additions or major code changes increase the minor version, such as `1.0.1` to `1.1.0`.
 - Reserve major version changes, such as `2.0.0`, for breaking changes or substantial architecture changes.
 
+## Release Files
+
+Run this from the project root after changing `CMS_VERSION`:
+
+```sh
+tools/build-release.sh
+```
+
+The script creates:
+
+- `releases/holycross-cms-VERSION.zip`
+- `releases/holycross-cms-VERSION.zip.sha256`
+
+Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
+
 ## Changelog
+
+### 1.6.1
+
+- Added release package generation.
+- Updated the GitHub workflow so every version bump is committed and pushed.
 
 ### 1.6.0
 
