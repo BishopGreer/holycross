@@ -19,6 +19,7 @@ rm -f "$ARCHIVE" "$CHECKSUM"
 cd "$ROOT_DIR"
 zip -qr "$ARCHIVE" . \
     -x ".git/*" \
+    -x ".github/*" \
     -x "config/config.php" \
     -x "releases/*" \
     -x "*.log" \

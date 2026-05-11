@@ -13,7 +13,7 @@ A small PHP/MariaDB website with:
 - Admin users page with current-user list and admin user creation
 - GitHub update checks and release ZIP installs from the admin updater
 
-Current version: `1.7.0`
+Current version: `1.7.1`
 
 ## Versioning
 
@@ -27,7 +27,16 @@ Current version: `1.7.0`
 
 ## Release Files
 
-Run this from the project root after changing `CMS_VERSION`:
+GitHub creates downloadable release assets when a version tag is pushed:
+
+```sh
+git tag vVERSION
+git push origin vVERSION
+```
+
+The release workflow checks that the tag version matches `CMS_VERSION`, builds the release ZIP, publishes a GitHub Release, and uploads the ZIP plus checksum.
+
+For local release files, run this from the project root after changing `CMS_VERSION`:
 
 ```sh
 tools/build-release.sh
@@ -41,6 +50,11 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.7.1
+
+- Added a GitHub Actions release workflow that creates GitHub Releases with ZIP and checksum assets from version tags.
+- Updated release packaging to exclude GitHub workflow files from installable ZIP archives.
 
 ### 1.7.0
 
