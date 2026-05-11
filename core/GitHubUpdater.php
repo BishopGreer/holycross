@@ -33,6 +33,7 @@ final class GitHubUpdater
 
         $zipPath = $this->downloadRelease($version);
         $extractPath = $this->extractRelease($zipPath);
+        $this->ensureWritableForUpdate($extractPath, CMS_ROOT);
         $copied = $this->copyReleaseFiles($extractPath, CMS_ROOT);
         $migrations = (new Migrator(Database::connect()))->migrate();
         $this->deleteDirectory($extractPath);
@@ -102,20 +103,78 @@ final class GitHubUpdater
 
             if (is_dir($sourcePath)) {
                 if (!is_dir($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
+                    if (!mkdir($destinationPath, 0755, true) && !is_dir($destinationPath)) {
+                        throw new RuntimeException('Could not create update directory: ' . $relativePath);
+                    }
                 }
                 $copied += $this->copyReleaseFiles($sourcePath, $destinationPath);
                 continue;
             }
 
-            if (!copy($sourcePath, $destinationPath)) {
+            $temporaryPath = $destinationPath . '.update-' . bin2hex(random_bytes(4));
+            if (!copy($sourcePath, $temporaryPath)) {
                 throw new RuntimeException('Could not copy update file: ' . $relativePath);
+            }
+
+            if (!rename($temporaryPath, $destinationPath)) {
+                @unlink($temporaryPath);
+                throw new RuntimeException('Could not replace update file: ' . $relativePath);
             }
 
             $copied++;
         }
 
         return $copied;
+    }
+
+    private function ensureWritableForUpdate(string $source, string $destination): void
+    {
+        $items = scandir($source);
+
+        if ($items === false) {
+            throw new RuntimeException('Could not read extracted update files.');
+        }
+
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+
+            $sourcePath = $source . DIRECTORY_SEPARATOR . $item;
+            $destinationPath = $destination . DIRECTORY_SEPARATOR . $item;
+            $relativePath = ltrim(str_replace(CMS_ROOT, '', $destinationPath), DIRECTORY_SEPARATOR);
+
+            if ($this->shouldSkip($relativePath)) {
+                continue;
+            }
+
+            if (is_dir($sourcePath)) {
+                if (is_dir($destinationPath)) {
+                    if (!is_writable($destinationPath)) {
+                        throw new RuntimeException('Update cannot write to directory: ' . $relativePath . '. Check ownership or permissions.');
+                    }
+                } else {
+                    $parent = dirname($destinationPath);
+                    if (!is_writable($parent)) {
+                        throw new RuntimeException('Update cannot create directory: ' . $relativePath . '. Check ownership or permissions on ' . ltrim(str_replace(CMS_ROOT, '', $parent), DIRECTORY_SEPARATOR) . '.');
+                    }
+                }
+
+                $this->ensureWritableForUpdate($sourcePath, $destinationPath);
+                continue;
+            }
+
+            if (file_exists($destinationPath)) {
+                if (!is_writable($destinationPath)) {
+                    throw new RuntimeException('Update cannot overwrite file: ' . $relativePath . '. Check ownership or permissions.');
+                }
+            } else {
+                $parent = dirname($destinationPath);
+                if (!is_writable($parent)) {
+                    throw new RuntimeException('Update cannot create file: ' . $relativePath . '. Check ownership or permissions on ' . ltrim(str_replace(CMS_ROOT, '', $parent), DIRECTORY_SEPARATOR) . '.');
+                }
+            }
+        }
     }
 
     private function shouldSkip(string $relativePath): bool

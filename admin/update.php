@@ -54,6 +54,7 @@ require __DIR__ . '/_header.php';
 <div class="panel">
     <h2>GitHub Updates</h2>
     <p>Check the Holy Cross GitHub repository for a newer CMS release, then install it from the generated release ZIP.</p>
+    <p class="muted">If installation reports that a file cannot be overwritten, adjust that file or folder so the web server user owns it or can write to it, then run the installer again.</p>
     <?php if ($error): ?>
         <p class="notice error"><?= cms_e($error) ?></p>
     <?php endif; ?>

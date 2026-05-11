@@ -14,7 +14,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.8.0`
+Current version: `1.8.1`
 
 ## Versioning
 
@@ -51,6 +51,12 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.8.1
+
+- Added updater preflight checks for files and directories that PHP cannot overwrite.
+- Changed GitHub update installation to copy through temporary files before replacing existing files.
+- Improved admin updater guidance for file permission problems.
 
 ### 1.8.0
 
