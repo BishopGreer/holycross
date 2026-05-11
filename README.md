@@ -12,8 +12,9 @@ A small PHP/MariaDB website with:
 - Public contact form with branded HTML email copies and SMTP support
 - Admin users page with current-user list and admin user creation
 - GitHub update checks and release ZIP installs from the admin updater
+- Media library for uploaded images and page editor image insertion
 
-Current version: `1.7.2`
+Current version: `1.8.0`
 
 ## Versioning
 
@@ -50,6 +51,12 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.8.0
+
+- Added an admin Media page for uploading and listing image files.
+- Added uploaded image insertion to the page editor toolbar.
+- Added upload folder protections and release packaging rules that preserve the upload directory without bundling uploaded media.
 
 ### 1.7.2
 

@@ -21,9 +21,12 @@ zip -qr "$ARCHIVE" . \
     -x ".git/*" \
     -x ".github/*" \
     -x "config/config.php" \
+    -x "assets/uploads/*" \
     -x "releases/*" \
     -x "*.log" \
     -x ".DS_Store"
+
+zip -q "$ARCHIVE" assets/uploads/.gitkeep assets/uploads/.htaccess
 
 (cd "$RELEASE_DIR" && shasum -a 256 "$(basename "$ARCHIVE")" > "$(basename "$CHECKSUM")")
 

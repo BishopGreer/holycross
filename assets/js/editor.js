@@ -3,6 +3,7 @@
 
     var textarea = document.getElementById('content');
     var toolbar = document.querySelector('.editor-toolbar');
+    var imageSelect = document.getElementById('editor_image_url');
     var savedSelection = { start: 0, end: 0 };
 
     if (!textarea || !toolbar) {
@@ -115,6 +116,19 @@
             var url = window.prompt('Enter link URL', 'https://');
             if (url) {
                 replaceSelection('<a href="' + url.replace(/"/g, '&quot;') + '">' + label + '</a>');
+            }
+        }
+
+        if (action === 'image') {
+            var imageUrl = imageSelect ? imageSelect.value : '';
+            var altText = window.prompt('Image alt text', currentSelection().text || '');
+
+            if (!imageUrl) {
+                imageUrl = window.prompt('Image URL', 'https://');
+            }
+
+            if (imageUrl) {
+                replaceSelection('<img src="' + imageUrl.replace(/"/g, '&quot;') + '" alt="' + (altText || '').replace(/"/g, '&quot;') + '">');
             }
         }
 

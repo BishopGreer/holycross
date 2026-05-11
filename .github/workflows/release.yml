@@ -56,10 +56,12 @@ jobs:
             -x ".git/*" \
             -x ".github/*" \
             -x "config/config.php" \
+            -x "assets/uploads/*" \
             -x "releases/*" \
             -x "*.log" \
             -x ".DS_Store"
 
+          zip -q "$ZIP" assets/uploads/.gitkeep assets/uploads/.htaccess
           shasum -a 256 "$ZIP" > "$SHA"
 
       - name: Publish GitHub release

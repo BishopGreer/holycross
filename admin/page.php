@@ -8,6 +8,7 @@ cms_require_installation();
 Auth::requireLogin();
 
 $repo = new PageRepository();
+$mediaLibrary = new MediaLibrary();
 $user = Auth::user();
 $id = (int)($_GET['id'] ?? $_POST['id'] ?? 0);
 $page = $id > 0 ? $repo->find($id) : null;
@@ -47,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $title = $page ? 'Edit Page' : 'New Page';
+$mediaItems = $mediaLibrary->all();
 require __DIR__ . '/_header.php';
 ?>
 <div class="toolbar">
@@ -88,10 +90,21 @@ require __DIR__ . '/_header.php';
         <button type="button" data-editor-wrap="<em>|</em>" title="Italic" aria-label="Italic"><em>I</em></button>
         <button type="button" data-editor-wrap="<blockquote>|</blockquote>" title="Block quote" aria-label="Block quote">&ldquo;</button>
         <button type="button" data-editor-action="link" title="Link" aria-label="Link">Link</button>
+        <button type="button" data-editor-action="image" title="Image" aria-label="Image">Image</button>
         <button type="button" data-editor-action="ul" title="Bulleted list" aria-label="Bulleted list">&bull; List</button>
         <button type="button" data-editor-action="ol" title="Numbered list" aria-label="Numbered list">1. List</button>
         <button type="button" data-editor-action="hr" title="Divider" aria-label="Divider">Line</button>
         <button type="button" data-editor-action="clear" title="Clear formatting from selection" aria-label="Clear formatting">Clear</button>
+    </div>
+    <div class="editor-media-picker">
+        <label for="editor_image_url">Uploaded image</label>
+        <select id="editor_image_url">
+            <option value="">Choose an uploaded image</option>
+            <?php foreach ($mediaItems as $item): ?>
+                <option value="<?= cms_e($item['url']) ?>"><?= cms_e($item['name']) ?></option>
+            <?php endforeach; ?>
+        </select>
+        <a class="button secondary" href="<?= cms_e(cms_base_url('/admin/media.php')) ?>">Upload images</a>
     </div>
     <textarea id="content" name="content" required><?= cms_e($page['content'] ?? '') ?></textarea>
 

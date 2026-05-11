@@ -47,7 +47,7 @@ final class GitHubUpdater
     private function downloadRelease(string $version): string
     {
         $fileName = 'holycross-cms-' . $version . '.zip';
-        $url = $this->rawUrl('releases/' . $fileName);
+        $url = $this->releaseAssetUrl($version, $fileName);
         $target = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $fileName;
         $data = $this->downloadText($url);
 
@@ -147,6 +147,11 @@ final class GitHubUpdater
     private function rawUrl(string $path): string
     {
         return 'https://raw.githubusercontent.com/' . self::OWNER . '/' . self::REPO . '/' . self::BRANCH . '/' . ltrim($path, '/');
+    }
+
+    private function releaseAssetUrl(string $version, string $fileName): string
+    {
+        return 'https://github.com/' . self::OWNER . '/' . self::REPO . '/releases/download/v' . $version . '/' . rawurlencode($fileName);
     }
 
     private function deleteDirectory(string $path): void
