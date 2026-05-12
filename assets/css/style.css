@@ -434,7 +434,7 @@ textarea {
     display: grid;
     align-items: end;
     gap: .65rem;
-    grid-template-columns: minmax(180px, 2fr) minmax(130px, 1fr) minmax(120px, 1fr) minmax(160px, 1fr) auto;
+    grid-template-columns: minmax(180px, 2fr) minmax(130px, 1fr) minmax(120px, 1fr) minmax(160px, 1fr) auto auto;
     margin: 0 0 .55rem;
 }
 

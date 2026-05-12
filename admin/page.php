@@ -13,6 +13,7 @@ $user = Auth::user();
 $id = (int)($_GET['id'] ?? $_POST['id'] ?? 0);
 $page = $id > 0 ? $repo->find($id) : null;
 $errors = [];
+$uploaded = false;
 
 if ($id > 0 && !$page) {
     http_response_code(404);
@@ -21,30 +22,42 @@ if ($id > 0 && !$page) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Csrf::verify();
-    $titleValue = trim((string)($_POST['title'] ?? ''));
-    $slugValue = trim((string)($_POST['slug'] ?? ''));
-    $contentValue = trim((string)($_POST['content'] ?? ''));
 
-    if ($titleValue === '') {
-        $errors[] = 'Title is required.';
-    }
-    if ($slugValue === '') {
-        $errors[] = 'Slug is required.';
-    }
-    if ($contentValue === '') {
-        $errors[] = 'Content is required.';
-    }
-
-    if (!$errors) {
+    if (($_POST['action'] ?? '') === 'upload_image') {
         try {
-            $savedId = $repo->save($_POST, (int)$user['id']);
-            cms_redirect('/admin/page.php?id=' . $savedId . '&saved=1');
+            $mediaLibrary->upload($_FILES['media_file'] ?? []);
+            $uploaded = true;
         } catch (Throwable $e) {
             $errors[] = $e->getMessage();
         }
     }
 
-    $page = array_merge($page ?? [], $_POST);
+    if (($_POST['action'] ?? 'save_page') === 'save_page') {
+        $titleValue = trim((string)($_POST['title'] ?? ''));
+        $slugValue = trim((string)($_POST['slug'] ?? ''));
+        $contentValue = trim((string)($_POST['content'] ?? ''));
+
+        if ($titleValue === '') {
+            $errors[] = 'Title is required.';
+        }
+        if ($slugValue === '') {
+            $errors[] = 'Slug is required.';
+        }
+        if ($contentValue === '') {
+            $errors[] = 'Content is required.';
+        }
+
+        if (!$errors) {
+            try {
+                $savedId = $repo->save($_POST, (int)$user['id']);
+                cms_redirect('/admin/page.php?id=' . $savedId . '&saved=1');
+            } catch (Throwable $e) {
+                $errors[] = $e->getMessage();
+            }
+        }
+
+        $page = array_merge($page ?? [], $_POST);
+    }
 }
 
 $title = $page ? 'Edit Page' : 'New Page';
@@ -58,11 +71,25 @@ require __DIR__ . '/_header.php';
 <?php if (isset($_GET['saved'])): ?>
     <p class="notice">Page saved.</p>
 <?php endif; ?>
+<?php if ($uploaded): ?>
+    <p class="notice">Image uploaded. Choose it below, place your cursor in the content box, then select Insert selected image.</p>
+<?php endif; ?>
 <?php foreach ($errors as $error): ?>
     <p class="notice error"><?= cms_e($error) ?></p>
 <?php endforeach; ?>
+<form method="post" enctype="multipart/form-data" class="panel">
+    <?= Csrf::field() ?>
+    <input type="hidden" name="action" value="upload_image">
+    <input type="hidden" name="id" value="<?= cms_e((string)($page['id'] ?? 0)) ?>">
+
+    <h2>Upload Image</h2>
+    <label for="media_file">Image file</label>
+    <input id="media_file" name="media_file" type="file" accept="image/jpeg,image/png,image/gif,image/webp" required>
+    <p><button type="submit">Upload image</button></p>
+</form>
 <form method="post" class="panel">
     <?= Csrf::field() ?>
+    <input type="hidden" name="action" value="save_page">
     <input type="hidden" name="id" value="<?= cms_e((string)($page['id'] ?? 0)) ?>">
 
     <label for="title">Title</label>
@@ -120,6 +147,7 @@ require __DIR__ . '/_header.php';
         </select>
         <label for="editor_image_caption">Caption</label>
         <input id="editor_image_caption" placeholder="Optional caption">
+        <button type="button" class="editor-image-insert" data-editor-action="image">Insert selected image</button>
         <a class="button secondary" href="<?= cms_e(cms_base_url('/admin/media.php')) ?>">Upload images</a>
     </div>
     <textarea id="content" name="content" required><?= cms_e($page['content'] ?? '') ?></textarea>

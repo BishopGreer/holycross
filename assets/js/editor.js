@@ -7,6 +7,7 @@
     var imageWidth = document.getElementById('editor_image_width');
     var imageAlign = document.getElementById('editor_image_align');
     var imageCaption = document.getElementById('editor_image_caption');
+    var imageInsertButton = document.querySelector('.editor-image-insert');
     var savedSelection = { start: 0, end: 0 };
 
     if (!textarea || !toolbar) {
@@ -105,14 +106,14 @@
     textarea.addEventListener('select', rememberSelection);
     textarea.addEventListener('focus', rememberSelection);
 
-    toolbar.addEventListener('mousedown', function (event) {
+    function preserveSelectionOnButton(event) {
         if (event.target.closest('button')) {
             event.preventDefault();
             restoreSelection();
         }
-    });
+    }
 
-    toolbar.addEventListener('click', function (event) {
+    function handleButtonClick(event) {
         var button = event.target.closest('button');
 
         if (!button) {
@@ -169,7 +170,15 @@
         if (action === 'clear') {
             clearSelection();
         }
-    });
+    }
+
+    toolbar.addEventListener('mousedown', preserveSelectionOnButton);
+    toolbar.addEventListener('click', handleButtonClick);
+
+    if (imageInsertButton) {
+        imageInsertButton.addEventListener('mousedown', preserveSelectionOnButton);
+        imageInsertButton.addEventListener('click', handleButtonClick);
+    }
 
     rememberSelection();
 })();
