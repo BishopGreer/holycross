@@ -16,8 +16,14 @@ if (!$page) {
     $page = [
         'title' => 'Page not found',
         'content' => '<p>The page you requested could not be found.</p>',
+        'meta_title' => '',
         'meta_description' => '',
+        'meta_keywords' => '',
     ];
+}
+$browserTitle = trim((string)($page['meta_title'] ?? ''));
+if ($browserTitle === '') {
+    $browserTitle = ((string)$page['title']) . ' | ' . cms_site_title();
 }
 ?>
 <!doctype html>
@@ -25,9 +31,12 @@ if (!$page) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= cms_e($page['title']) ?> | <?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?></title>
+    <title><?= cms_e($browserTitle) ?></title>
     <?php if (!empty($page['meta_description'])): ?>
         <meta name="description" content="<?= cms_e($page['meta_description']) ?>">
+    <?php endif; ?>
+    <?php if (!empty($page['meta_keywords'])): ?>
+        <meta name="keywords" content="<?= cms_e($page['meta_keywords']) ?>">
     <?php endif; ?>
     <link rel="stylesheet" href="<?= cms_e(cms_base_url('/assets/css/style.css')) ?>">
 </head>

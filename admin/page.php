@@ -118,9 +118,6 @@ require __DIR__ . '/_header.php';
         </div>
     </div>
 
-    <label for="meta_description">Meta description</label>
-    <input id="meta_description" name="meta_description" value="<?= cms_e($page['meta_description'] ?? '') ?>" maxlength="255">
-
     <label for="status">Status</label>
     <select id="status" name="status">
         <?php $status = $page['status'] ?? 'draft'; ?>
@@ -171,6 +168,18 @@ require __DIR__ . '/_header.php';
         <a class="button secondary" href="<?= cms_e(cms_base_url('/admin/media.php')) ?>">Upload images</a>
     </div>
     <textarea id="content" name="content" required><?= cms_e($page['content'] ?? '') ?></textarea>
+
+    <section class="seo-fields">
+        <h2>SEO Meta Information</h2>
+        <label for="meta_title">Meta title</label>
+        <input id="meta_title" name="meta_title" value="<?= cms_e($page['meta_title'] ?? '') ?>" maxlength="255" placeholder="<?= cms_e(($page['title'] ?? 'Page title') . ' | ' . cms_site_title()) ?>">
+
+        <label for="meta_description">Meta description</label>
+        <textarea id="meta_description" name="meta_description" maxlength="255"><?= cms_e($page['meta_description'] ?? '') ?></textarea>
+
+        <label for="meta_keywords">Meta keywords</label>
+        <input id="meta_keywords" name="meta_keywords" value="<?= cms_e($page['meta_keywords'] ?? '') ?>" maxlength="255" placeholder="Old Catholic, The Woodlands, parish, worship">
+    </section>
 
     <p><button type="submit">Save page</button></p>
 </form>

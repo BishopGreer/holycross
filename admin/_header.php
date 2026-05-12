@@ -7,7 +7,7 @@ $config = cms_config();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= cms_e($title ?? 'Admin') ?> | <?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?></title>
+    <title><?= cms_e($title ?? 'Admin') ?> | <?= cms_e(cms_site_title()) ?></title>
     <link rel="stylesheet" href="<?= cms_e(cms_base_url('/assets/css/style.css')) ?>">
 </head>
 <body>
@@ -15,7 +15,7 @@ $config = cms_config();
         <div class="wrap">
             <a class="admin-brand" href="<?= cms_e(cms_base_url('/admin/')) ?>">
                 <img src="<?= cms_e(cms_base_url('/assets/images/holy-cross-logo.png')) ?>" alt="">
-                <strong><?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?> Admin</strong>
+                <strong><?= cms_e($config['app_name'] ?? cms_site_title()) ?> Admin</strong>
             </a>
             <nav aria-label="Admin">
                 <a href="<?= cms_e(cms_base_url('/admin/')) ?>">Pages</a>

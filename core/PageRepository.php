@@ -78,14 +78,16 @@ final class PageRepository
 
         if ($id > 0) {
             $stmt = Database::connect()->prepare(
-                'UPDATE pages SET title = ?, slug = ?, parent_id = ?, content = ?, meta_description = ?, status = ?, nav_order = ?, updated_by = ?, updated_at = NOW() WHERE id = ?'
+                'UPDATE pages SET title = ?, slug = ?, parent_id = ?, content = ?, meta_title = ?, meta_description = ?, meta_keywords = ?, status = ?, nav_order = ?, updated_by = ?, updated_at = NOW() WHERE id = ?'
             );
             $stmt->execute([
                 trim((string)$data['title']),
                 $slug,
                 $parentId,
                 (string)$data['content'],
+                trim((string)($data['meta_title'] ?? '')),
                 trim((string)($data['meta_description'] ?? '')),
+                trim((string)($data['meta_keywords'] ?? '')),
                 $status,
                 $navOrder,
                 $userId,
@@ -96,14 +98,16 @@ final class PageRepository
         }
 
         $stmt = Database::connect()->prepare(
-            'INSERT INTO pages (title, slug, parent_id, content, meta_description, status, nav_order, created_by, updated_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())'
+            'INSERT INTO pages (title, slug, parent_id, content, meta_title, meta_description, meta_keywords, status, nav_order, created_by, updated_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())'
         );
         $stmt->execute([
             trim((string)$data['title']),
             $slug,
             $parentId,
             (string)$data['content'],
+            trim((string)($data['meta_title'] ?? '')),
             trim((string)($data['meta_description'] ?? '')),
+            trim((string)($data['meta_keywords'] ?? '')),
             $status,
             $navOrder,
             $userId,

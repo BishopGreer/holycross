@@ -565,6 +565,16 @@ textarea {
     margin: 0 0 .55rem;
 }
 
+.seo-fields {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+}
+
+.seo-fields textarea {
+    min-height: 110px;
+}
+
 .editor-media-picker label {
     margin: .35rem 0 0;
 }

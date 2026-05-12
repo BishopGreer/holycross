@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Prayer Request | <?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?></title>
+    <title>Prayer Request | <?= cms_e(cms_site_title()) ?></title>
     <meta name="description" content="Submit a prayer request to Holy Cross Parish and Friary.">
     <link rel="stylesheet" href="<?= cms_e(cms_base_url('/assets/css/style.css')) ?>">
     <?= HCaptcha::scriptTag() ?>

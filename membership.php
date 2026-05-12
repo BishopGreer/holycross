@@ -291,7 +291,7 @@ $displayMembers = $members ?: [[
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Membership | <?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?></title>
+    <title>Membership | <?= cms_e(cms_site_title()) ?></title>
     <meta name="description" content="Register for parish membership at Holy Cross Parish and Friary.">
     <link rel="stylesheet" href="<?= cms_e(cms_base_url('/assets/css/style.css')) ?>">
     <?= HCaptcha::scriptTag() ?>

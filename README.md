@@ -3,6 +3,7 @@
 A small PHP/MariaDB website with:
 
 - Public editable pages
+- Per-page SEO meta title, description, and keywords
 - Nested page navigation
 - Admin login
 - Create, edit, publish, draft, and delete pages
@@ -19,7 +20,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.11.0`
+Current version: `1.12.0`
 
 ## Versioning
 
@@ -56,6 +57,12 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.12.0
+
+- Added a bottom SEO Meta Information section to the page editor with meta title, description, and keywords.
+- Added database migration support for per-page meta titles and keywords.
+- Updated public and admin browser titles to use `Holy Cross Parish and Friary | Old Catholic Church in The Woodlands, Texas`.
 
 ### 1.11.0
 

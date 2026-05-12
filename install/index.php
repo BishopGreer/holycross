@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$done) {
         'password' => (string)($_POST['db_pass'] ?? ''),
         'charset' => 'utf8mb4',
     ];
-    $appName = trim((string)($_POST['app_name'] ?? 'Holy Cross Parish and Friary'));
+    $appName = trim((string)($_POST['app_name'] ?? cms_site_title()));
     $baseUrl = rtrim(trim((string)($_POST['base_url'] ?? '')), '/');
     $adminUser = trim((string)($_POST['admin_user'] ?? ''));
     $adminEmail = trim((string)($_POST['admin_email'] ?? ''));
@@ -48,19 +48,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$done) {
             $adminId = (int)$pdo->lastInsertId();
 
             $stmt = $pdo->prepare(
-                'INSERT INTO pages (title, slug, content, meta_description, status, created_by, updated_by, created_at, updated_at) VALUES (?, ?, ?, ?, "published", ?, ?, NOW(), NOW())'
+                'INSERT INTO pages (title, slug, content, meta_title, meta_description, meta_keywords, status, created_by, updated_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, "published", ?, ?, NOW(), NOW())'
             );
             $stmt->execute([
                 'Home',
                 'home',
                 '<p>Welcome to Holy Cross Parish and Friary, an Old Catholic parish rooted in sacramental worship, Franciscan hospitality, and the life of prayer.</p><p>Use the admin backend to edit this page, publish ministry pages, and keep parish information current.</p>',
+                cms_site_title(),
                 'Holy Cross Parish and Friary in Houston, Texas.',
+                'Old Catholic Church, The Woodlands, Holy Cross Parish and Friary',
                 $adminId,
                 $adminId,
             ]);
 
             $config = [
-                'app_name' => $appName ?: 'Holy Cross Parish and Friary',
+                'app_name' => $appName ?: cms_site_title(),
                 'base_url' => $baseUrl,
                 'db' => $db,
                 'session_name' => 'php_page_cms',
@@ -80,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$done) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Install Holy Cross CMS</title>
+    <title>Install | <?= cms_e(cms_site_title()) ?></title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -100,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$done) {
             <form method="post" class="panel">
                 <h2>Site</h2>
                 <label for="app_name">Site name</label>
-                <input id="app_name" name="app_name" value="Holy Cross Parish and Friary">
+                <input id="app_name" name="app_name" value="<?= cms_e(cms_site_title()) ?>">
                 <label for="base_url">Base URL</label>
                 <input id="base_url" name="base_url" placeholder="https://example.com">
 

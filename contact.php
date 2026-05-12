@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contact | <?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?></title>
+    <title>Contact | <?= cms_e(cms_site_title()) ?></title>
     <meta name="description" content="Contact Holy Cross Parish and Friary.">
     <link rel="stylesheet" href="<?= cms_e(cms_base_url('/assets/css/style.css')) ?>">
     <?= HCaptcha::scriptTag() ?>

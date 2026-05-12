@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 const CMS_ROOT = __DIR__ . '/..';
-const CMS_VERSION = '1.11.0';
+const CMS_VERSION = '1.12.0';
+const CMS_SITE_TITLE = 'Holy Cross Parish and Friary | Old Catholic Church in The Woodlands, Texas';
 
 spl_autoload_register(function (string $class): void {
     $path = CMS_ROOT . '/core/' . $class . '.php';
@@ -36,6 +37,11 @@ function cms_config(): array
 
     $config = require cms_config_path();
     return is_array($config) ? $config : [];
+}
+
+function cms_site_title(): string
+{
+    return CMS_SITE_TITLE;
 }
 
 function cms_base_url(string $path = ''): string
