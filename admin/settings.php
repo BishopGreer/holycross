@@ -11,6 +11,10 @@ $errors = [];
 $saved = false;
 $testSent = false;
 $contactRecipient = Settings::get('contact_recipient_email');
+$membershipRecipient = Settings::get('membership_recipient_email');
+$hcaptchaEnabled = Settings::get('hcaptcha_enabled', '0');
+$hcaptchaSiteKey = Settings::get('hcaptcha_site_key');
+$hcaptchaSecretKey = Settings::get('hcaptcha_secret_key');
 $mailTransport = Settings::get('mail_transport', 'mail');
 $mailFromName = Settings::get('mail_from_name', 'Holy Cross Parish and Friary');
 $mailFromEmail = Settings::get('mail_from_email');
@@ -24,6 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Csrf::verify();
 
     $contactRecipient = trim((string)($_POST['contact_recipient_email'] ?? ''));
+    $membershipRecipient = trim((string)($_POST['membership_recipient_email'] ?? ''));
+    $hcaptchaEnabled = isset($_POST['hcaptcha_enabled']) ? '1' : '0';
+    $hcaptchaSiteKey = trim((string)($_POST['hcaptcha_site_key'] ?? ''));
+    $postedHcaptchaSecret = (string)($_POST['hcaptcha_secret_key'] ?? '');
+    $hcaptchaSecretKey = $postedHcaptchaSecret === '' ? $hcaptchaSecretKey : trim($postedHcaptchaSecret);
     $mailTransport = (string)($_POST['mail_transport'] ?? 'mail');
     $mailFromName = trim((string)($_POST['mail_from_name'] ?? 'Holy Cross Parish and Friary'));
     $mailFromEmail = trim((string)($_POST['mail_from_email'] ?? ''));
@@ -36,6 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($contactRecipient === '' || !filter_var($contactRecipient, FILTER_VALIDATE_EMAIL)) {
         $errors[] = 'Enter a valid contact recipient email address.';
+    }
+    if ($membershipRecipient !== '' && !filter_var($membershipRecipient, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Enter a valid membership recipient email address.';
+    }
+    if ($hcaptchaEnabled === '1' && ($hcaptchaSiteKey === '' || $hcaptchaSecretKey === '')) {
+        $errors[] = 'Enter both hCaptcha keys, or leave hCaptcha disabled.';
     }
     if (!in_array($mailTransport, ['mail', 'smtp'], true)) {
         $errors[] = 'Choose a valid mail transport.';
@@ -55,6 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$errors) {
         Settings::set('contact_recipient_email', $contactRecipient);
+        Settings::set('membership_recipient_email', $membershipRecipient);
+        Settings::set('hcaptcha_enabled', $hcaptchaEnabled);
+        Settings::set('hcaptcha_site_key', $hcaptchaSiteKey);
+        Settings::set('hcaptcha_secret_key', $hcaptchaSecretKey);
         Settings::set('mail_transport', $mailTransport);
         Settings::set('mail_from_name', $mailFromName);
         Settings::set('mail_from_email', $mailFromEmail);
@@ -97,6 +116,22 @@ require __DIR__ . '/_header.php';
     <h2>Contact Form</h2>
     <label for="contact_recipient_email">Send contact form messages to</label>
     <input id="contact_recipient_email" name="contact_recipient_email" type="email" value="<?= cms_e($contactRecipient) ?>" required>
+
+    <h2>Membership Form</h2>
+    <label for="membership_recipient_email">Send membership registrations to</label>
+    <input id="membership_recipient_email" name="membership_recipient_email" type="email" value="<?= cms_e($membershipRecipient) ?>" placeholder="Leave blank to use contact recipient">
+
+    <h2>hCaptcha</h2>
+    <label class="checkbox-label">
+        <input name="hcaptcha_enabled" type="checkbox" value="1" <?= $hcaptchaEnabled === '1' ? 'checked' : '' ?>>
+        Enable hCaptcha on public forms
+    </label>
+
+    <label for="hcaptcha_site_key">hCaptcha site key</label>
+    <input id="hcaptcha_site_key" name="hcaptcha_site_key" value="<?= cms_e($hcaptchaSiteKey) ?>">
+
+    <label for="hcaptcha_secret_key">hCaptcha secret key</label>
+    <input id="hcaptcha_secret_key" name="hcaptcha_secret_key" type="password" placeholder="<?= $hcaptchaSecretKey === '' ? '' : 'Leave blank to keep current secret key' ?>">
 
     <h2>Mail Delivery</h2>
     <label for="mail_transport">Mail transport</label>

@@ -10,11 +10,14 @@ A small PHP/MariaDB website with:
 - Automatic database migrations for install and update
 - Holy Cross Parish and Friary theme assets and brand palette
 - Public contact form with branded HTML email copies and SMTP support
+- hCaptcha protection for public forms
+- Public parish membership registration with household member entries
 - Admin users page with current-user list and admin user creation
+- Admin membership registration review page
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.8.3`
+Current version: `1.9.0`
 
 ## Versioning
 
@@ -51,6 +54,13 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.9.0
+
+- Added hCaptcha settings and verification for the public contact form.
+- Added a public parish membership registration form with inclusive labels, optional gender identity and pronoun fields, household information, pastoral notes, and multiple household members.
+- Added membership registration database tables and an admin Membership page for reviewing submissions and updating their status.
+- Added branded membership registration email notifications and applicant copies.
 
 ### 1.8.3
 
@@ -164,7 +174,7 @@ Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and 
 
 Visit `/admin/` and sign in with the account created by the installer.
 
-Use `/admin/settings.php` to configure the recipient email address and mail delivery settings for the public contact form. SMTP is recommended when the hosting provider does not support PHP `mail()` or requires authenticated email delivery.
+Use `/admin/settings.php` to configure recipient email addresses, hCaptcha keys, and mail delivery settings for public forms. SMTP is recommended when the hosting provider does not support PHP `mail()` or requires authenticated email delivery.
 
 ## Updates
 

@@ -95,6 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($form['comments'] === '') {
         $errors[] = 'Comments are required.';
     }
+    [$captchaOk, $captchaError] = HCaptcha::verify(
+        (string)($_POST['h-captcha-response'] ?? ''),
+        (string)($_SERVER['REMOTE_ADDR'] ?? '')
+    );
+    if (!$captchaOk) {
+        $errors[] = $captchaError;
+    }
 
     if (!$errors) {
         $siteName = (string)($config['app_name'] ?? 'Holy Cross Parish and Friary');
@@ -123,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Contact | <?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?></title>
     <meta name="description" content="Contact Holy Cross Parish and Friary.">
     <link rel="stylesheet" href="<?= cms_e(cms_base_url('/assets/css/style.css')) ?>">
+    <?= HCaptcha::scriptTag() ?>
 </head>
 <body>
     <header class="site-header">
@@ -135,6 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </a>
                 <?php endforeach; ?>
                 <a href="<?= cms_e(cms_base_url('/contact.php')) ?>">Contact</a>
+                <a href="<?= cms_e(cms_base_url('/membership.php')) ?>">Membership</a>
             </nav>
         </div>
     </header>
@@ -160,6 +169,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <label for="comments">Comments</label>
                 <textarea id="comments" name="comments" required><?= cms_e($form['comments']) ?></textarea>
+
+                <?= HCaptcha::widget() ?>
 
                 <p><button type="submit">Send message</button></p>
             </form>

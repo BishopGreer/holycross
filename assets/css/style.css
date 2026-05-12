@@ -373,6 +373,10 @@ textarea {
     font: 1rem/1.45 var(--ui-font);
 }
 
+input[type="checkbox"] {
+    width: auto;
+}
+
 input:focus,
 select:focus,
 textarea:focus {
@@ -392,6 +396,70 @@ textarea {
 
 .contact-form textarea {
     min-height: 220px;
+}
+
+.membership-form {
+    max-width: 860px;
+}
+
+.membership-form textarea {
+    min-height: 140px;
+}
+
+.family-members {
+    display: grid;
+    gap: 1rem;
+}
+
+.family-member {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1rem;
+    background: rgba(194, 181, 155, .12);
+}
+
+.family-member legend {
+    padding: 0 .4rem;
+    color: var(--beard-brown);
+    font-family: var(--display-font);
+    font-weight: 700;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: .55rem;
+    font-family: var(--body-font);
+    line-height: 1.45;
+}
+
+.checkbox-label input {
+    margin-top: .3rem;
+}
+
+.captcha-field {
+    margin: 1.1rem 0;
+}
+
+.detail-list {
+    display: grid;
+    gap: .35rem 1rem;
+    grid-template-columns: minmax(140px, max-content) minmax(0, 1fr);
+    margin: 0;
+}
+
+.detail-list dt {
+    color: var(--beard-brown);
+    font-family: var(--display-font);
+    font-weight: 700;
+}
+
+.detail-list dd {
+    margin: 0;
+}
+
+.inline-label {
+    margin: 0;
 }
 
 .settings-grid {
@@ -517,8 +585,13 @@ button.danger {
 
 .actions {
     display: flex;
+    align-items: center;
     gap: .5rem;
     flex-wrap: wrap;
+}
+
+.actions select {
+    width: auto;
 }
 
 @media (max-width: 820px) {
@@ -577,6 +650,10 @@ button.danger {
     }
 
     .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-list {
         grid-template-columns: 1fr;
     }
 

@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS membership_applications (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    household_name VARCHAR(190) NOT NULL,
+    primary_name VARCHAR(190) NOT NULL,
+    preferred_name VARCHAR(190) DEFAULT NULL,
+    pronouns VARCHAR(100) DEFAULT NULL,
+    gender_identity VARCHAR(190) DEFAULT NULL,
+    date_of_birth DATE DEFAULT NULL,
+    email VARCHAR(190) NOT NULL,
+    phone VARCHAR(60) DEFAULT NULL,
+    address_line1 VARCHAR(190) NOT NULL,
+    address_line2 VARCHAR(190) DEFAULT NULL,
+    city VARCHAR(120) NOT NULL,
+    state VARCHAR(80) NOT NULL,
+    postal_code VARCHAR(30) NOT NULL,
+    preferred_contact VARCHAR(60) DEFAULT NULL,
+    current_church VARCHAR(190) DEFAULT NULL,
+    baptism_status VARCHAR(120) DEFAULT NULL,
+    sacraments_received TEXT NULL,
+    ministries_interest TEXT NULL,
+    pastoral_notes TEXT NULL,
+    accessibility_needs TEXT NULL,
+    consent_to_contact TINYINT(1) NOT NULL DEFAULT 0,
+    status ENUM('new', 'reviewed', 'contacted', 'archived') NOT NULL DEFAULT 'new',
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+    INDEX idx_membership_status_created (status, created_at),
+    INDEX idx_membership_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS membership_family_members (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    application_id INT UNSIGNED NOT NULL,
+    name VARCHAR(190) NOT NULL,
+    preferred_name VARCHAR(190) DEFAULT NULL,
+    pronouns VARCHAR(100) DEFAULT NULL,
+    gender_identity VARCHAR(190) DEFAULT NULL,
+    date_of_birth DATE DEFAULT NULL,
+    relationship VARCHAR(120) NOT NULL,
+    notes TEXT NULL,
+    created_at DATETIME NOT NULL,
+    INDEX idx_family_members_application (application_id),
+    CONSTRAINT fk_family_members_application FOREIGN KEY (application_id)
+        REFERENCES membership_applications(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

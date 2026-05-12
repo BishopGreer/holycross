@@ -20,6 +20,7 @@ $config = cms_config();
             <nav aria-label="Admin">
                 <a href="<?= cms_e(cms_base_url('/admin/')) ?>">Pages</a>
                 <a href="<?= cms_e(cms_base_url('/admin/media.php')) ?>">Media</a>
+                <a href="<?= cms_e(cms_base_url('/admin/membership.php')) ?>">Membership</a>
                 <a href="<?= cms_e(cms_base_url('/admin/users.php')) ?>">Users</a>
                 <a href="<?= cms_e(cms_base_url('/admin/settings.php')) ?>">Settings</a>
                 <a href="<?= cms_e(cms_base_url('/admin/update.php')) ?>">Update</a>

@@ -42,6 +42,7 @@ if (!$page) {
                     </a>
                 <?php endforeach; ?>
                 <a href="<?= cms_e(cms_base_url('/contact.php')) ?>">Contact</a>
+                <a href="<?= cms_e(cms_base_url('/membership.php')) ?>">Membership</a>
             </nav>
         </div>
     </header>
