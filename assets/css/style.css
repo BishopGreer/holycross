@@ -162,7 +162,7 @@ p {
 
 .nav-submenu {
     position: absolute;
-    top: calc(100% + .35rem);
+    top: 100%;
     left: 0;
     z-index: 20;
     display: none;
@@ -175,8 +175,8 @@ p {
 }
 
 .nav-submenu .nav-submenu {
-    top: -.4rem;
-    left: calc(100% + .35rem);
+    top: 0;
+    left: 100%;
 }
 
 .nav-submenu a,
