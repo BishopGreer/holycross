@@ -18,7 +18,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.10.0`
+Current version: `1.10.1`
 
 ## Versioning
 
@@ -55,6 +55,11 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.10.1
+
+- Fixed nested navigation so child pages stay hidden until the parent item is hovered or focused.
+- Increased spacing between parent page names and the nested page indicator.
 
 ### 1.10.0
 

@@ -144,7 +144,7 @@ p {
 }
 
 .nav-parent {
-    gap: .4rem;
+    gap: .7rem;
 }
 
 .nav-indicator {
@@ -683,12 +683,17 @@ button.danger {
     .nav-submenu,
     .nav-submenu .nav-submenu {
         position: static;
-        display: grid;
+        display: none;
         gap: .2rem;
         min-width: 0;
         margin-top: .2rem;
         background: rgba(46, 27, 10, .72);
         box-shadow: none;
+    }
+
+    .nav-item:hover > .nav-submenu,
+    .nav-item:focus-within > .nav-submenu {
+        display: grid;
     }
 
     table,
