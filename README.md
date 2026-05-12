@@ -18,7 +18,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.10.3`
+Current version: `1.10.4`
 
 ## Versioning
 
@@ -55,6 +55,12 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.10.4
+
+- Changed membership registration notifications to email every admin user email address.
+- Kept applicant copy emails on membership registrations and routed all form email through the existing Mailer/SMTP settings.
+- Clarified Settings guidance for optional extra membership registration recipients.
 
 ### 1.10.3
 

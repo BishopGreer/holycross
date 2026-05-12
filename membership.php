@@ -11,7 +11,6 @@ $config = cms_config();
 $repo = new PageRepository();
 $navPages = $repo->published();
 $membershipRepo = new MembershipRepository();
-$recipient = Settings::get('membership_recipient_email') ?: Settings::get('contact_recipient_email');
 $errors = [];
 $sent = false;
 $form = [
@@ -173,6 +172,28 @@ function membership_posted_members(): array
     return $members;
 }
 
+function membership_admin_recipients(): array
+{
+    $emails = Database::connect()
+        ->query('SELECT email FROM users WHERE role = "admin" AND email <> "" ORDER BY username ASC')
+        ->fetchAll(PDO::FETCH_COLUMN);
+    $extraRecipient = Settings::get('membership_recipient_email');
+
+    if ($extraRecipient !== '') {
+        $emails[] = $extraRecipient;
+    }
+
+    $valid = [];
+    foreach ($emails as $email) {
+        $email = trim((string)$email);
+        if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $valid[strtolower($email)] = $email;
+        }
+    }
+
+    return array_values($valid);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Csrf::verify();
 
@@ -186,8 +207,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $members = membership_posted_members();
 
-    if ($recipient === '' || !filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'The membership form recipient has not been configured yet.';
+    $adminRecipients = membership_admin_recipients();
+
+    if (!$adminRecipients) {
+        $errors[] = 'No admin email addresses are available for membership notifications. Add or update admin emails on the Users page.';
     }
     foreach (['household_name', 'primary_name', 'email', 'address_line1', 'city', 'state', 'postal_code'] as $required) {
         if ($form[$required] === '') {
@@ -224,17 +247,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $siteName = (string)($config['app_name'] ?? 'Holy Cross Parish and Friary');
             $adminHtml = membership_email_template('New Parish Membership Registration', 'A new membership registration was submitted through the parish website.', $form, $members);
             $copyHtml = membership_email_template('Your Membership Registration Was Received', 'Thank you for reaching out to Holy Cross Parish and Friary. A copy of your registration is below for your records.', $form, $members);
-            [$sentToRecipient, $recipientError] = Mailer::send($recipient, $siteName . ': Membership registration from ' . $form['primary_name'], $adminHtml, $form['email']);
-            [$sentCopy, $copyError] = Mailer::send($form['email'], 'Copy of your membership registration to ' . $siteName, $copyHtml, $recipient);
+            $adminSubject = $siteName . ': Membership registration from ' . $form['primary_name'];
+            $adminErrors = [];
 
-            if ($sentToRecipient && $sentCopy) {
+            foreach ($adminRecipients as $adminRecipient) {
+                [$sentToAdmin, $adminError] = Mailer::send($adminRecipient, $adminSubject, $adminHtml, $form['email']);
+                if (!$sentToAdmin) {
+                    $adminErrors[] = $adminRecipient . ': ' . $adminError;
+                }
+            }
+
+            [$sentCopy, $copyError] = Mailer::send($form['email'], 'Copy of your membership registration to ' . $siteName, $copyHtml, $adminRecipients[0] ?? '');
+
+            if (!$adminErrors && $sentCopy) {
                 $sent = true;
                 foreach (array_keys($form) as $key) {
                     $form[$key] = $key === 'consent_to_contact' ? false : '';
                 }
                 $members = [];
             } else {
-                $errors[] = 'Your registration was saved, but the email could not be sent. ' . ($recipientError ?: $copyError ?: 'Please check the mail settings.');
+                $emailError = $adminErrors ? implode(' ', $adminErrors) : ($copyError ?: 'Please check the mail settings.');
+                $errors[] = 'Your registration was saved, but one or more emails could not be sent. '
+                    . $emailError;
             }
         } catch (Throwable $e) {
             $errors[] = 'The registration could not be saved. ' . $e->getMessage();

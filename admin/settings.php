@@ -118,8 +118,9 @@ require __DIR__ . '/_header.php';
     <input id="contact_recipient_email" name="contact_recipient_email" type="email" value="<?= cms_e($contactRecipient) ?>" required>
 
     <h2>Membership Form</h2>
-    <label for="membership_recipient_email">Send membership registrations to</label>
-    <input id="membership_recipient_email" name="membership_recipient_email" type="email" value="<?= cms_e($membershipRecipient) ?>" placeholder="Leave blank to use contact recipient">
+    <label for="membership_recipient_email">Also send membership registrations to</label>
+    <input id="membership_recipient_email" name="membership_recipient_email" type="email" value="<?= cms_e($membershipRecipient) ?>" placeholder="Optional additional recipient">
+    <p class="muted">Membership registrations are sent to all admin user email addresses. Add or update admin emails on the Users page.</p>
 
     <h2>hCaptcha</h2>
     <label class="checkbox-label">
