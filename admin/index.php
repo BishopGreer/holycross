@@ -28,6 +28,8 @@ require __DIR__ . '/_header.php';
         <tr>
             <th>Title</th>
             <th>Slug</th>
+            <th>Parent</th>
+            <th>Nav Order</th>
             <th>Status</th>
             <th>Updated</th>
             <th>Actions</th>
@@ -38,6 +40,8 @@ require __DIR__ . '/_header.php';
             <tr>
                 <td><?= cms_e($page['title']) ?></td>
                 <td><a href="<?= cms_e(cms_page_url((string)$page['slug'])) ?>"><?= cms_e($page['slug']) ?></a></td>
+                <td><?= cms_e($page['parent_title'] ?: '-') ?></td>
+                <td><?= cms_e((string)($page['nav_order'] ?? 0)) ?></td>
                 <td><?= cms_e($page['status']) ?></td>
                 <td><?= cms_e($page['updated_at']) ?></td>
                 <td>

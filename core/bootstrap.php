@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 const CMS_ROOT = __DIR__ . '/..';
-const CMS_VERSION = '1.9.0';
+const CMS_VERSION = '1.10.0';
 
 spl_autoload_register(function (string $class): void {
     $path = CMS_ROOT . '/core/' . $class . '.php';
@@ -67,6 +67,59 @@ function cms_redirect(string $path): never
 function cms_e(?string $value): string
 {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+}
+
+function cms_public_nav(array $pages): string
+{
+    return cms_public_nav_items(cms_page_tree($pages), 0)
+        . '<a href="' . cms_e(cms_base_url('/contact.php')) . '">Contact</a>'
+        . '<a href="' . cms_e(cms_base_url('/membership.php')) . '">Membership</a>';
+}
+
+function cms_page_tree(array $pages): array
+{
+    $byId = [];
+    $tree = [];
+
+    foreach ($pages as $page) {
+        $page['children'] = [];
+        $byId[(int)$page['id']] = $page;
+    }
+
+    foreach ($byId as $id => &$page) {
+        $parentId = (int)($page['parent_id'] ?? 0);
+        if ($parentId > 0 && isset($byId[$parentId])) {
+            $byId[$parentId]['children'][] = &$page;
+            continue;
+        }
+
+        $tree[] = &$page;
+    }
+    unset($page);
+
+    return $tree;
+}
+
+function cms_public_nav_items(array $pages, int $level): string
+{
+    $html = '';
+
+    foreach ($pages as $page) {
+        $children = $page['children'] ?? [];
+        if (!$children) {
+            $html .= '<a href="' . cms_e(cms_page_url((string)$page['slug'])) . '">' . cms_e($page['title']) . '</a>';
+            continue;
+        }
+
+        $html .= '<div class="nav-item has-children">'
+            . '<a class="nav-parent" href="' . cms_e(cms_page_url((string)$page['slug'])) . '" aria-haspopup="true">'
+            . '<span>' . cms_e($page['title']) . '</span><span class="nav-indicator" aria-hidden="true">+</span></a>'
+            . '<div class="nav-submenu" role="menu">'
+            . cms_public_nav_items($children, $level + 1)
+            . '</div></div>';
+    }
+
+    return $html;
 }
 
 function cms_current_path_slug(): string

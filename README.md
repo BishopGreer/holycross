@@ -3,6 +3,7 @@
 A small PHP/MariaDB website with:
 
 - Public editable pages
+- Nested page navigation
 - Admin login
 - Create, edit, publish, draft, and delete pages
 - Web installer
@@ -17,7 +18,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.9.0`
+Current version: `1.10.0`
 
 ## Versioning
 
@@ -54,6 +55,13 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.10.0
+
+- Added nested page support with parent page selection and navigation ordering.
+- Added database migration fields for page parent relationships.
+- Updated the public navigation menu to show child pages beneath parent pages with a visible indicator.
+- Updated the admin Pages list to show each page parent and navigation order.
 
 ### 1.9.0
 

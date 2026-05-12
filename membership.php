@@ -267,13 +267,7 @@ $displayMembers = $members ?: [[
         <div class="parish-hero" role="img" aria-label="<?= cms_e($config['app_name'] ?? 'Holy Cross Parish and Friary') ?>"></div>
         <div class="site-nav">
             <nav class="primary-nav" aria-label="Primary">
-                <?php foreach ($navPages as $navPage): ?>
-                    <a href="<?= cms_e(cms_page_url((string)$navPage['slug'])) ?>">
-                        <?= cms_e($navPage['title']) ?>
-                    </a>
-                <?php endforeach; ?>
-                <a href="<?= cms_e(cms_base_url('/contact.php')) ?>">Contact</a>
-                <a href="<?= cms_e(cms_base_url('/membership.php')) ?>">Membership</a>
+                <?= cms_public_nav($navPages) ?>
             </nav>
         </div>
     </header>

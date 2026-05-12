@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $title = $page ? 'Edit Page' : 'New Page';
 $mediaItems = $mediaLibrary->all();
+$parentOptions = $repo->parentOptions((int)($page['id'] ?? 0));
 require __DIR__ . '/_header.php';
 ?>
 <div class="toolbar">
@@ -97,6 +98,25 @@ require __DIR__ . '/_header.php';
 
     <label for="slug">Slug</label>
     <input id="slug" name="slug" value="<?= cms_e($page['slug'] ?? '') ?>" placeholder="about-us" required>
+
+    <div class="settings-grid">
+        <div>
+            <label for="parent_id">Parent page</label>
+            <select id="parent_id" name="parent_id">
+                <?php $parentId = (int)($page['parent_id'] ?? 0); ?>
+                <option value="0">No parent - top level</option>
+                <?php foreach ($parentOptions as $option): ?>
+                    <option value="<?= cms_e((string)$option['id']) ?>" <?= $parentId === (int)$option['id'] ? 'selected' : '' ?>>
+                        <?= cms_e(str_repeat('- ', (int)$option['level']) . $option['title']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label for="nav_order">Navigation order</label>
+            <input id="nav_order" name="nav_order" type="number" step="1" value="<?= cms_e((string)($page['nav_order'] ?? 0)) ?>">
+        </div>
+    </div>
 
     <label for="meta_description">Meta description</label>
     <input id="meta_description" name="meta_description" value="<?= cms_e($page['meta_description'] ?? '') ?>" maxlength="255">
