@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 const CMS_ROOT = __DIR__ . '/..';
-const CMS_VERSION = '1.10.2';
+const CMS_VERSION = '1.10.3';
 
 spl_autoload_register(function (string $class): void {
     $path = CMS_ROOT . '/core/' . $class . '.php';
@@ -72,8 +72,13 @@ function cms_e(?string $value): string
 function cms_public_nav(array $pages): string
 {
     return cms_public_nav_items(cms_page_tree($pages), 0)
+        . '<div class="nav-item has-children">'
+        . '<button class="nav-parent nav-menu-button" type="button" aria-haspopup="true">'
+        . '<span>Forms</span><span class="nav-indicator" aria-hidden="true">+</span></button>'
+        . '<div class="nav-submenu" role="menu">'
         . '<a href="' . cms_e(cms_base_url('/contact.php')) . '">Contact</a>'
-        . '<a href="' . cms_e(cms_base_url('/membership.php')) . '">Membership</a>';
+        . '<a href="' . cms_e(cms_base_url('/membership.php')) . '">Membership</a>'
+        . '</div></div>';
 }
 
 function cms_page_tree(array $pages): array

@@ -18,7 +18,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.10.2`
+Current version: `1.10.3`
 
 ## Versioning
 
@@ -55,6 +55,10 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.10.3
+
+- Moved Contact and Membership beneath a non-page Forms navigation menu item.
 
 ### 1.10.2
 

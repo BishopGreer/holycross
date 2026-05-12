@@ -122,17 +122,21 @@ p {
 }
 
 .primary-nav a,
+.primary-nav button,
 .admin-bar a {
     color: var(--altar-white);
     text-decoration: none;
 }
 
-.primary-nav a {
+.primary-nav a,
+.primary-nav button {
     min-height: 42px;
     display: inline-flex;
     align-items: center;
+    border: 0;
     border-radius: 4px;
     padding: .45rem .8rem;
+    background: transparent;
     color: #fff6e7;
     font-size: .98rem;
     font-weight: 700;
@@ -193,7 +197,9 @@ p {
 }
 
 .primary-nav a:hover,
-.primary-nav a:focus-visible {
+.primary-nav a:focus-visible,
+.primary-nav button:hover,
+.primary-nav button:focus-visible {
     background: rgba(190, 32, 46, .85);
     color: var(--altar-white);
 }
@@ -670,6 +676,7 @@ button.danger {
     }
 
     .primary-nav a,
+    .primary-nav button,
     .nav-item {
         justify-content: center;
         flex: 1 1 44%;
@@ -746,6 +753,7 @@ button.danger {
     }
 
     .primary-nav a,
+    .primary-nav button,
     .nav-item {
         flex-basis: 100%;
     }
