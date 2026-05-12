@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 const CMS_ROOT = __DIR__ . '/..';
-const CMS_VERSION = '1.10.4';
+const CMS_VERSION = '1.11.0';
 
 spl_autoload_register(function (string $class): void {
     $path = CMS_ROOT . '/core/' . $class . '.php';
@@ -78,6 +78,7 @@ function cms_public_nav(array $pages): string
         . '<div class="nav-submenu" role="menu">'
         . '<a href="' . cms_e(cms_base_url('/contact.php')) . '">Contact</a>'
         . '<a href="' . cms_e(cms_base_url('/membership.php')) . '">Membership</a>'
+        . '<a href="' . cms_e(cms_base_url('/prayer.php')) . '">Prayer Request</a>'
         . '</div></div>';
 }
 

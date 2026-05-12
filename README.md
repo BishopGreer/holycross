@@ -11,6 +11,7 @@ A small PHP/MariaDB website with:
 - Automatic database migrations for install and update
 - Holy Cross Parish and Friary theme assets and brand palette
 - Public contact form with branded HTML email copies and SMTP support
+- Public prayer request form with admin and requester email copies
 - hCaptcha protection for public forms
 - Public parish membership registration with household member entries
 - Admin users page with current-user list and admin user creation
@@ -18,7 +19,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.10.4`
+Current version: `1.11.0`
 
 ## Versioning
 
@@ -55,6 +56,12 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.11.0
+
+- Added a public Prayer Request form nested under Forms.
+- Added hCaptcha verification to prayer requests using the existing Settings keys.
+- Added branded prayer request emails to all admin users and copy emails to the requester through the existing Mailer/SMTP setup.
 
 ### 1.10.4
 
