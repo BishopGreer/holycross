@@ -192,6 +192,35 @@ p {
     color: var(--beard-brown);
 }
 
+.content-image {
+    margin: 1.5rem auto;
+}
+
+.content-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+}
+
+.content-image figcaption {
+    margin-top: .45rem;
+    color: var(--muted);
+    font-size: .95rem;
+    font-style: italic;
+    text-align: center;
+}
+
+.content-image.image-left {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.content-image.image-right {
+    margin-left: auto;
+    margin-right: 0;
+}
+
 .site-footer {
     padding: 2rem 0;
     background: linear-gradient(90deg, #2e1b0a, var(--beard-brown));
@@ -405,13 +434,12 @@ textarea {
     display: grid;
     align-items: end;
     gap: .65rem;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(180px, 2fr) minmax(130px, 1fr) minmax(120px, 1fr) minmax(160px, 1fr) auto;
     margin: 0 0 .55rem;
 }
 
 .editor-media-picker label {
-    grid-column: 1 / -1;
-    margin-top: .35rem;
+    margin: .35rem 0 0;
 }
 
 .media-grid {

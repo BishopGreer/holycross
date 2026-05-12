@@ -14,7 +14,7 @@ A small PHP/MariaDB website with:
 - GitHub update checks and release ZIP installs from the admin updater
 - Media library for uploaded images and page editor image insertion
 
-Current version: `1.8.1`
+Current version: `1.8.2`
 
 ## Versioning
 
@@ -51,6 +51,11 @@ The script creates:
 Release archives exclude `.git`, local generated config, logs, `.DS_Store`, and previous release bundles.
 
 ## Changelog
+
+### 1.8.2
+
+- Added image insertion controls for width, left/center/right positioning, alt text, and optional captions.
+- Updated inserted page images to use styled figure markup.
 
 ### 1.8.1
 

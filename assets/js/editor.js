@@ -4,6 +4,9 @@
     var textarea = document.getElementById('content');
     var toolbar = document.querySelector('.editor-toolbar');
     var imageSelect = document.getElementById('editor_image_url');
+    var imageWidth = document.getElementById('editor_image_width');
+    var imageAlign = document.getElementById('editor_image_align');
+    var imageCaption = document.getElementById('editor_image_caption');
     var savedSelection = { start: 0, end: 0 };
 
     if (!textarea || !toolbar) {
@@ -81,6 +84,22 @@
         replaceSelection(cleaned, 0, cleaned.length);
     }
 
+    function escapeAttribute(value) {
+        return String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
+
+    function escapeHtml(value) {
+        return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function imageMarkup(url, altText, width, align, caption) {
+        var className = 'image-' + (align || 'center');
+        var image = '<img src="' + escapeAttribute(url) + '" alt="' + escapeAttribute(altText) + '">';
+        var figcaption = caption ? '\n    <figcaption>' + escapeHtml(caption) + '</figcaption>' : '';
+
+        return '<figure class="content-image ' + className + '" style="max-width: ' + escapeAttribute(width || '100%') + ';">\n    ' + image + figcaption + '\n</figure>';
+    }
+
     textarea.addEventListener('keyup', rememberSelection);
     textarea.addEventListener('mouseup', rememberSelection);
     textarea.addEventListener('select', rememberSelection);
@@ -122,13 +141,16 @@
         if (action === 'image') {
             var imageUrl = imageSelect ? imageSelect.value : '';
             var altText = window.prompt('Image alt text', currentSelection().text || '');
+            var width = imageWidth ? imageWidth.value : '100%';
+            var align = imageAlign ? imageAlign.value : 'center';
+            var caption = imageCaption ? imageCaption.value : '';
 
             if (!imageUrl) {
                 imageUrl = window.prompt('Image URL', 'https://');
             }
 
             if (imageUrl) {
-                replaceSelection('<img src="' + imageUrl.replace(/"/g, '&quot;') + '" alt="' + (altText || '').replace(/"/g, '&quot;') + '">');
+                replaceSelection(imageMarkup(imageUrl, altText, width, align, caption));
             }
         }
 

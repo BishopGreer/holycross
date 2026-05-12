@@ -104,6 +104,22 @@ require __DIR__ . '/_header.php';
                 <option value="<?= cms_e($item['url']) ?>"><?= cms_e($item['name']) ?></option>
             <?php endforeach; ?>
         </select>
+        <label for="editor_image_width">Image width</label>
+        <select id="editor_image_width">
+            <option value="100%">Full width</option>
+            <option value="75%">Three quarters</option>
+            <option value="50%">Half width</option>
+            <option value="33%">One third</option>
+            <option value="25%">One quarter</option>
+        </select>
+        <label for="editor_image_align">Position</label>
+        <select id="editor_image_align">
+            <option value="center">Center</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+        </select>
+        <label for="editor_image_caption">Caption</label>
+        <input id="editor_image_caption" placeholder="Optional caption">
         <a class="button secondary" href="<?= cms_e(cms_base_url('/admin/media.php')) ?>">Upload images</a>
     </div>
     <textarea id="content" name="content" required><?= cms_e($page['content'] ?? '') ?></textarea>
